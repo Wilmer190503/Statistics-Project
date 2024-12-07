@@ -17,6 +17,10 @@ El propósito de este proyecto es analizar datos de personas atendidas y atencio
 
 ---
 
+# Pregunta de investigación
+
+¿Cómo ha evolucionado la atención de partos en términos de cobertura y tasa representativa en los diferentes departamentos de Colombia entre 2017 y 2019, y cuáles son las disparidades más significativas?
+
 # Preparación del entorno
 
 ## Instalación y carga de paquetes requeridos
@@ -173,11 +177,22 @@ skim(data_departamento)
 
 ---
 
+# Respuesta a la pregunta de investigación
+
+Entre 2017 y 2019, la asistencia al parto en Colombia mostró un aumento generalizado en la cobertura del servicio en la mayoría de los municipios. Por ejemplo, en Bogotá, D.C., el número de visitas aumentó de 160 en 2017 a 4.980 en 2019, lo que refleja una mejora significativa en la capacidad del sistema de salud. Sin embargo, persisten marcadas desigualdades regionales.
+
+Las tasas representativas también muestran disparidades. En municipios como Riohacha (La Guajira) la tasa representativa fue de 0,58 en 2019, mientras que en Medellín (Antioquia) fue de 0,60. Estas diferencias sugieren variaciones en la accesibilidad y la calidad de los servicios entre regiones.
+
+Los departamentos con menos infraestructura de salud, como La Guajira, han visto un aumento dramático en el número de servicios. En Maicao, por ejemplo, los servicios aumentaron de 32 en 2017 a 4.288 en 2019, probablemente debido a una mejor infraestructura y un aumento de la población atendida. Por el contrario, Antioquia presenta una mayor estabilidad en sus tarifas, reflejando una infraestructura más robusta.
+
 # Conclusiones
 
 - Los departamentos con mayores atenciones reflejan concentraciones demográficas o necesidades específicas.
 - Se observan patrones consistentes a lo largo de los años, lo cual indica estabilidad en la distribución regional.
 - Los departamentos con menor cantidad de atenciones podrían requerir mayor investigación para identificar factores limitantes.
+- La atención de partos en Colombia entre 2017 y 2019 muestra una tendencia positiva en términos de incremento en el número de atenciones, pero persisten desigualdades significativas entre regiones. Estas disparidades pueden estar relacionadas con factores socioeconómicos y la infraestructura disponible en cada departamento.
+- En conclusión, incluso si las tendencias son positivas, persisten importantes desigualdades en la cobertura y calidad de la atención del parto entre las diferentes regiones de Colombia.
+
 
 ---
 
