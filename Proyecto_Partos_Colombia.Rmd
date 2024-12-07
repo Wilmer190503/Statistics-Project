@@ -1,0 +1,189 @@
+---
+title: "Análisis de Partos en Colombia (2017-2019)"
+author: 
+- "Joan Sebastian Herrera Melgarejo - 2224506"
+- "Wilmer Andrés Romero Cala -2214102"
+output:
+  html_document:
+    theme: united
+    toc: true
+    toc_depth: 3
+    number_sections: true
+---
+
+# Introducción
+
+El propósito de este proyecto es analizar datos de personas atendidas y atenciones de partos en los diferentes departamentos de Colombia durante los años 2017, 2018 y 2019. Se busca identificar tendencias, patrones significativos y realizar un análisis descriptivo mediante gráficos y tablas.
+
+---
+
+# Preparación del entorno
+
+## Instalación y carga de paquetes requeridos
+
+```{r, message=FALSE}
+if (!require("httr")) install.packages("httr")
+if (!require("readr")) install.packages("readr")
+if (!require("dplyr")) install.packages("dplyr")
+if (!require("ggplot2")) install.packages("ggplot2")
+if (!require("skimr")) install.packages("skimr")
+if (!require("kableExtra")) install.packages("kableExtra")
+library(httr)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(skimr)
+library(kableExtra)
+```
+
+---
+
+# Lectura y limpieza de datos
+
+## Carga de datos desde GitHub
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Cvaslml/Statistics-Project/main/Partos.csv'
+data <- read.csv(url, na.strings = c("N/A", "NA", "----"), header = FALSE)
+colnames(data) <- data[1, ]
+data <- data[-1, ]
+conteos_totales <- data[1, ]
+data <- data[-1, ]
+```
+
+## Limpieza de datos
+
+```{r}
+colnames(data) <- gsub(" ", ".", colnames(data))  
+colnames(data) <- gsub(",", ".", colnames(data))  
+
+# Convertir las columnas de atenciones a numérico
+data$Número.de.Atenciones.2017 <- as.numeric(as.character(data$Número.de.Atenciones.2017))
+data$Número.de.Atenciones.2018 <- as.numeric(as.character(data$Número.de.Atenciones.2018))
+data$Número.de.Atenciones.2019 <- as.numeric(as.character(data$Número.de.Atenciones.2019))
+
+# Convertir las columnas de personas atendidas a numérico
+data$Número.de.Personas.Atendidas.2017 <- as.numeric(as.character(data$Número.de.Personas.Atendidas.2017))
+data$Número.de.Personas.Atendidas.2018 <- as.numeric(as.character(data$Número.de.Personas.Atendidas.2018))
+data$Número.de.Personas.Atendidas.2019 <- as.numeric(as.character(data$Número.de.Personas.Atendidas.2019))
+
+# Resumen por departamento
+data_departamento <- data %>%
+  group_by(Departamento) %>%
+  summarise(
+    `Número.de.Atenciones.2017` = sum(`Número.de.Atenciones.2017`, na.rm = TRUE),
+    `Número.de.Atenciones.2018` = sum(`Número.de.Atenciones.2018`, na.rm = TRUE),
+    `Número.de.Atenciones.2019` = sum(`Número.de.Atenciones.2019`, na.rm = TRUE),
+    `Número.de.Personas.Atendidas.2017` = sum(`Número.de.Personas.Atendidas.2017`, na.rm = TRUE),
+    `Número.de.Personas.Atendidas.2018` = sum(`Número.de.Personas.Atendidas.2018`, na.rm = TRUE),
+    `Número.de.Personas.Atendidas.2019` = sum(`Número.de.Personas.Atendidas.2019`, na.rm = TRUE)
+  )
+
+# Eliminar filas con valores vacíos o NA en la columna 'Departamento'
+data_departamento <- data_departamento %>%
+  filter(!is.na(Departamento) & Departamento != "")
+
+# Eliminar la segunda fila, que contiene los totales
+data_departamento <- data_departamento[-2, ]
+
+```
+
+---
+
+# Análisis Exploratorio
+
+## Tabla Resumen: datos de parto por Departamento
+
+```{r}
+data_departamento %>%
+  kable(caption = "Resumen datos de parto por Departamento") %>%
+  kable_styling(full_width = FALSE, position = "center") %>%
+  scroll_box(width = "100%", height = "300px")
+```
+
+## Estadísticas Descriptivas
+
+```{r}
+skim(data_departamento)
+```
+
+---
+
+# Visualización de Datos
+
+## Gráficos de barras
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/1.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/2.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/3.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/4.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/5.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/6.png)
+
+## Histogramas de Distribución
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/7.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/8.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/9.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/10.png){ width=60%}
+
+![Histograma de Personas Atendidas 2018](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/11.png){ width=60%}
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/12.png){ width=60% }
+
+## Gráficos circulares 
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/13.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/14.png)
+
+## Gráficos de dispersión 
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/15.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/16.png)
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/17.png)
+
+## Gráfico de Cajas y Bigotes
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/18.png)
+
+## Mapas de Calor
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/19.png){ width=90% }
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/20.png){ width=90% }
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/21.png){ width=90% }
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/22.png){ width=90% }
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/23.png){ width=90% }
+
+![](https://raw.githubusercontent.com/Cvaslml/Statistics-Project/8a1aba48ba70cb467a60b242e12ab0476e672ff9/Gr%C3%A1ficos/24.png){ width=90% }
+
+---
+
+# Conclusiones
+
+- Los departamentos con mayores atenciones reflejan concentraciones demográficas o necesidades específicas.
+- Se observan patrones consistentes a lo largo de los años, lo cual indica estabilidad en la distribución regional.
+- Los departamentos con menor cantidad de atenciones podrían requerir mayor investigación para identificar factores limitantes.
+
+---
+
+# Referencias
+
+- Fuente de datos: [GitHub - Cvaslml/Statistics-Project](https://github.com/Cvaslml/Statistics-Project)
+
+- Extracción de mapa por departamentos: [Dane - Mapas](https://geoportal.dane.gov.co/descargas/mgn_2023/)
+
